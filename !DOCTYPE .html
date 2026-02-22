@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRADA RADICE | The Olfactory Architecture</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* Custom Font Application */
+        body { font-family: 'Inter', sans-serif; background-color: #000; overflow-x: hidden; }
+        h1, h2, h3, .serif { font-family: 'Playfair Display', serif; }
+
+        /* Chart Container */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Interactive Element States */
+        .interactive-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .interactive-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(220, 38, 38, 0.1), transparent);
+            transition: all 0.5s ease;
+        }
+        .interactive-card:hover::before {
+            left: 100%;
+        }
+        .interactive-card:hover {
+            transform: translateX(8px);
+            border-color: #dc2626;
+            background-color: rgba(220, 38, 38, 0.05);
+        }
+        
+        .active-modifier {
+            border-color: #dc2626 !important;
+            background-color: #18181b !important;
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.15);
+        }
+
+        /* Glow effects */
+        .glow-text { text-shadow: 0 0 10px rgba(220, 38, 38, 0.5); }
+        .glass-panel {
+            background: rgba(24, 24, 27, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(220, 38, 38, 0.2);
+        }
+    </style>
+</head>
+<body class="text-white antialiased min-h-screen flex items-center selection:bg-red-900 selection:text-white relative">
+
+    <!-- Background Atmospheric Effects -->
+    <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-red-900/20 rounded-full mix-blend-screen filter blur-[120px] animate-pulse"></div>
+        <div class="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-red-800/20 rounded-full mix-blend-screen filter blur-[100px]"></div>
+        <!-- Grid overlay -->
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px] opacity-20"></div>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 py-12">
+        
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <div class="inline-flex items-center gap-3 mb-4">
+                <span class="h-px w-8 bg-red-600"></span>
+                <span class="text-red-500 font-bold tracking-[0.2em] text-xs uppercase">The Chemistry</span>
+                <span class="h-px w-8 bg-red-600"></span>
+            </div>
+            <h2 class="text-5xl md:text-6xl font-serif text-white mb-6 drop-shadow-lg">The Olfactory Architecture</h2>
+            <p class="text-zinc-400 max-w-2xl mx-auto text-lg font-light leading-relaxed">
+                Select a modifier to observe the chemical disruption. You don't change your scent; <span class="text-white italic">you tilt it.</span>
+            </p>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <!-- Left Column: Controls & Results (5 cols) -->
+            <div class="lg:col-span-5 flex flex-col gap-6">
+                
+                <!-- Selectors -->
+                <div class="glass-panel p-8 rounded-2xl shadow-2xl">
+                    <h3 class="font-bold text-sm tracking-widest text-zinc-500 uppercase mb-6 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                        Select Vector Shift
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <button onclick="updateScent('iris')" id="btn-iris" class="w-full text-left p-5 rounded-xl border border-zinc-800 bg-black/40 interactive-card group active-modifier">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-serif font-bold text-xl text-white group-hover:text-red-500 transition-colors duration-300">1. Iris Concrete</span>
+                                <span class="text-[10px] text-red-500 uppercase tracking-widest font-bold border border-red-500/30 px-2 py-1 rounded">Intellectual</span>
+                            </div>
+                            <p class="text-sm text-zinc-400 font-light">Iris butter + Neroli brightness</p>
+                        </button>
+
+                        <button onclick="updateScent('vetiver')" id="btn-vetiver" class="w-full text-left p-5 rounded-xl border border-zinc-800 bg-black/40 interactive-card group">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-serif font-bold text-xl text-white group-hover:text-red-500 transition-colors duration-300">2. Smoked Vetiver</span>
+                                <span class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold border border-zinc-700 px-2 py-1 rounded group-hover:text-red-500 group-hover:border-red-500/30 transition-colors">Power</span>
+                            </div>
+                            <p class="text-sm text-zinc-400 font-light">Vetiver root + Dry woods</p>
+                        </button>
+
+                        <button onclick="updateScent('carnation')" id="btn-carnation" class="w-full text-left p-5 rounded-xl border border-zinc-800 bg-black/40 interactive-card group">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-serif font-bold text-xl text-white group-hover:text-red-500 transition-colors duration-300">3. Spiced Carnation</span>
+                                <span class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold border border-zinc-700 px-2 py-1 rounded group-hover:text-red-500 group-hover:border-red-500/30 transition-colors">Sensual</span>
+                            </div>
+                            <p class="text-sm text-zinc-400 font-light">Clove tension + Resin warmth</p>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Result Card -->
+                <div class="bg-gradient-to-br from-zinc-900 to-black p-8 rounded-2xl border-l-4 border-red-600 shadow-2xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-red-600/10 rounded-full blur-2xl"></div>
+                    <h4 class="text-xs uppercase tracking-widest text-zinc-500 mb-3 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span> Resulting Aura
+                    </h4>
+                    <div id="aura-title" class="text-3xl font-serif mb-4 text-white glow-text">Cold Clarity</div>
+                    <p id="aura-desc" class="text-zinc-400 text-base leading-relaxed font-light">
+                        A shift towards intellectual authority. The mineral edge of Iris cuts through the warmth of the base, creating a sophisticated, detached elegance.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Right Column: Visualization (7 cols) -->
+            <div class="lg:col-span-7 h-full flex items-center">
+                <div class="w-full glass-panel rounded-3xl p-8 relative">
+                    <!-- Tech decoration -->
+                    <div class="absolute top-4 left-4 w-4 h-4 border-t-2 border-l-2 border-red-600/50"></div>
+                    <div class="absolute top-4 right-4 w-4 h-4 border-t-2 border-r-2 border-red-600/50"></div>
+                    <div class="absolute bottom-4 left-4 w-4 h-4 border-b-2 border-l-2 border-red-600/50"></div>
+                    <div class="absolute bottom-4 right-4 w-4 h-4 border-b-2 border-r-2 border-red-600/50"></div>
+                    
+                    <div class="chart-container w-full">
+                        <canvas id="scentRadar"></canvas>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- Global Colors for Red/Black Theme ---
+        const themeRed = 'rgba(220, 38, 38, 1)'; 
+        const themeRedTrans = 'rgba(220, 38, 38, 0.25)'; 
+        const themeWhite = '#ffffff';
+        const themeZinc400 = '#a1a1aa';
+        const themeZinc800 = 'rgba(39, 39, 42, 0.5)';
+        
+        // --- 1. Scent Mixer Logic (Radar Chart) ---
+        const ctxScent = document.getElementById('scentRadar').getContext('2d');
+        
+        // Data for different components
+        const scentData = {
+            base: [8, 4, 9, 2, 7], // The Root
+            iris: [3, 9, 5, 8, 4], // Iris
+            vetiver: [7, 2, 8, 5, 9], // Vetiver
+            carnation: [9, 3, 6, 4, 10] // Carnation
+        };
+        
+        // Initial Chart Setup
+        const scentChart = new Chart(ctxScent, {
+            type: 'radar',
+            data: {
+                labels: ['Warmth', 'Freshness', 'Longevity', 'Clarity', 'Intensity'],
+                datasets: [
+                    {
+                        label: 'The Root (Solid Base)',
+                        data: scentData.base,
+                        fill: true,
+                        backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                        borderColor: 'rgba(255, 255, 255, 0.15)',
+                        borderWidth: 1,
+                        pointBackgroundColor: 'rgba(255, 255, 255, 0.3)',
+                        pointBorderColor: 'transparent',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#000'
+                    },
+                    {
+                        label: 'Modifier Effect (Vector)',
+                        data: scentData.iris, // Default
+                        fill: true,
+                        backgroundColor: themeRedTrans,
+                        borderColor: themeRed,
+                        borderWidth: 2,
+                        pointBackgroundColor: themeRed,
+                        pointBorderColor: '#000',
+                        pointBorderWidth: 2,
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: themeRed,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: themeZinc800 },
+                        grid: { color: themeZinc800, circular: true },
+                        pointLabels: {
+                            font: { size: 13, family: 'Inter', weight: '600', letterSpacing: '1px' },
+                            color: themeWhite,
+                            padding: 20
+                        },
+                        ticks: { display: false, max: 10, min: 0 }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { 
+                            font: { family: 'Inter', size: 12 }, 
+                            color: themeZinc400,
+                            padding: 20,
+                            usePointStyle: true,
+                            boxWidth: 8
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0,0,0,0.8)',
+                        titleFont: { family: 'Playfair Display', size: 16 },
+                        bodyFont: { family: 'Inter', size: 13 },
+                        padding: 12,
+                        borderColor: themeRed,
+                        borderWidth: 1,
+                        displayColors: false
+                    }
+                }
+            }
+        });
+
+        // Function to update scent chart and text
+        function updateScent(modifier) {
+            // Update active button styling
+            document.querySelectorAll('.interactive-card').forEach(btn => {
+                btn.classList.remove('active-modifier');
+                // reset inner badges
+                const badge = btn.querySelector('span:nth-child(2)');
+                badge.classList.remove('text-red-500', 'border-red-500/30');
+                badge.classList.add('text-zinc-500', 'border-zinc-700');
+            });
+            
+            const activeBtn = document.getElementById(`btn-${modifier}`);
+            activeBtn.classList.add('active-modifier');
+            const activeBadge = activeBtn.querySelector('span:nth-child(2)');
+            activeBadge.classList.remove('text-zinc-500', 'border-zinc-700');
+            activeBadge.classList.add('text-red-500', 'border-red-500/30');
+
+            // Text Updates
+            const titleEl = document.getElementById('aura-title');
+            const descEl = document.getElementById('aura-desc');
+            
+            // Add slight fade out effect before text change
+            titleEl.style.opacity = '0';
+            descEl.style.opacity = '0';
+
+            setTimeout(() => {
+                if (modifier === 'iris') {
+                    scentChart.data.datasets[1].data = scentData.iris;
+                    scentChart.data.datasets[1].label = 'Iris Concrete Vector';
+                    titleEl.textContent = 'Cold Clarity';
+                    descEl.textContent = 'A shift towards intellectual authority. The mineral edge of Iris cuts through the warmth of the base, creating a sophisticated, detached elegance.';
+                } else if (modifier === 'vetiver') {
+                    scentChart.data.datasets[1].data = scentData.vetiver;
+                    scentChart.data.datasets[1].label = 'Smoked Vetiver Vector';
+                    titleEl.textContent = 'Grounded Power';
+                    descEl.textContent = 'A shift towards gravity and depth. The dry woods intensify the amber base, creating a second-skin aura of controlled power.';
+                } else if (modifier === 'carnation') {
+                    scentChart.data.datasets[1].data = scentData.carnation;
+                    scentChart.data.datasets[1].label = 'Spiced Carnation Vector';
+                    titleEl.textContent = 'Sensual Tension';
+                    descEl.textContent = 'A shift towards friction and heat. Clove tension disrupts the smooth base, adding a resinous warmth that feels restrained yet intense.';
+                }
+                scentChart.update();
+                
+                // Fade back in
+                titleEl.style.transition = 'opacity 0.5s ease';
+                descEl.style.transition = 'opacity 0.5s ease';
+                titleEl.style.opacity = '1';
+                descEl.style.opacity = '1';
+            }, 150);
+        }
+    </script>
+</body>
+</html>
